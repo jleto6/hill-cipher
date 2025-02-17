@@ -45,24 +45,42 @@ print("")
 # Matrix multiplication
 print("")
 
+
 # Plaintext
-char_buffer = {}
+
+# Dict storing character and its numerical value in alphabet
+char_buffer = {
+    "character" : [],
+    "numerical" : [],
+    
+}
 i=0
 for char in plaintext_content:
-    char_buffer.append(char)
-    #print(char_buffer[i])
+    char_buffer["character"].append(char)
+
+    # Convert to number
+    if char.isdigit():
+        char_buffer["numerical"].append(char)
+    else:
+        char = char.upper()
+        char = ord(char) - ord('A')
+        char_buffer["numerical"].append(char)
     i+=1
+
 i=0
-for i in range (0, len(plaintext_content), 2):
+for i in range (0, len(plaintext_content), 2,):
     
     try:
-        print(char_buffer[i])
-        print(char_buffer[i+1])
+        print(char_buffer["character"][i], end=" ")
+        print(char_buffer["numerical"][i])
+
+        print(char_buffer["character"][i+1], end=" ")
+        print(char_buffer["numerical"][i+1])
+
     except:
         print("out of range")
 
     print("")
-    i+=2    
 
 print("------")
 print("")
@@ -71,13 +89,43 @@ print("")
 # Pieces of the key
 #print(key_content[1][1])
 matrix_size = int(key_content[0][0])
-key_buffer = []
 for i in range(1, matrix_size + 1):
     for j in range(0, matrix_size):
-        #print(key_content[i][j])
         print(key_content[i][j], end=" ")
-
     print("")
+
+# Multiply
+print("")
+print("-----")
+
+result0 = int(key_content[1][0]) * int(char_buffer["numerical"][0])
+result1 = int(key_content[1][1]) * int(char_buffer["numerical"][1])
+final_result0 = chr(((result0 + result1)%26) + ord('A'))
+print(final_result0)
+
+result2 = int(key_content[2][0]) * int(char_buffer["numerical"][0])
+result3 = int(key_content[2][1]) * int(char_buffer["numerical"][1])
+final_result1 = chr(((result2 + result3)%26) + ord('A'))
+print(final_result1)
+
+'''
+print(result0)
+print(result1)
+print(result2)
+print(result3)
+'''
+
+
+"""
+print(f"key content: {key_content[i][j]}")
+print(f"char buffer: {char_buffer["numerical"][1]}")
+result = int(key_content[i][j]) * int(char_buffer["numerical"][1])
+print(f"RESULT: {result}")
+"""
+
+print("")
+
+print("")
 
 
 
