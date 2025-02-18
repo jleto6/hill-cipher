@@ -96,17 +96,39 @@ for i in range(1, matrix_size + 1):
 
 # Multiply
 print("")
-print("-----")
+print("---+--")
 
+k=-1
+for h in range((len(plaintext_content))):
+    #print(h)
+    for i in range(1, matrix_size + 1):
+        k+=1
+        for j in range(matrix_size):
+            result0 = int(key_content[i][j]) * int(char_buffer["numerical"][k])
+          
+            result1 = int(key_content[i][j]) * int(char_buffer["numerical"][k+1])           
+
+            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k]}/{char_buffer['character'][k]} = {result0}")
+            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k+1]}/{char_buffer['character'][k+1]} = {result1}")
+            
+            final_result0 = ((result0 + result1)%26)
+            print(f"The final result is: {final_result0}")
+            print("")
+
+print(plaintext_content)
+print("---+--")        
+
+"""
 result0 = int(key_content[1][0]) * int(char_buffer["numerical"][0])
 result1 = int(key_content[1][1]) * int(char_buffer["numerical"][1])
 final_result0 = chr(((result0 + result1)%26) + ord('A'))
-print(final_result0)
+print(final_result0, end="")
 
 result2 = int(key_content[2][0]) * int(char_buffer["numerical"][0])
 result3 = int(key_content[2][1]) * int(char_buffer["numerical"][1])
 final_result1 = chr(((result2 + result3)%26) + ord('A'))
-print(final_result1)
+print(final_result1, end = "")
+"""
 
 '''
 print(result0)
