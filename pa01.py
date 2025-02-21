@@ -25,11 +25,23 @@ plaintext = sys.argv[2]
 try: 
     with open(key, 'r') as file:
         key_content = [line.strip().split() for line in file]  # Strip each line and make it a nested list
+        matrix_size = int(key_content[0][0]) # Store the matrix size
+        del key_content[0]  # Then delete the identifier from the key content
         print("")
         print(f"Key Content: \n{key_content}")  # Print  
 except:
     print("Error reading key text")
-print("------------------")
+print("")
+
+# Pieces of the key
+print("The Key:")
+try:
+    for i in range(matrix_size):
+        for j in range(0, matrix_size):
+            print(key_content[i][j], end=" ")
+        print("")    
+except:
+    print("Error")
 
 #--- Plaintext ---#
 
@@ -39,6 +51,10 @@ try:
         plaintext_content = file.read().replace("\n", "")
 except:
     print("Error reading key text")
+
+print("")
+print(f"Raw Plaintext Content: \n{plaintext_content}")
+print("")
 
 # Dict storing character and its numerical value in alphabet
 char_buffer = {
@@ -51,6 +67,7 @@ for char in plaintext_content:
 
     # Convert to number
     if char.isdigit():
+        char = int(char)
         char_buffer["numerical"].append(char)
     else:
         char = char.upper()
@@ -58,44 +75,37 @@ for char in plaintext_content:
         char_buffer["numerical"].append(char)
     i+=1
 i=0
+original_group_buffer = []
 group_buffer = []
 
 # Create a nested list for the plaintext groups
 for i in range (0, len(plaintext_content), 2,):
     try:
-        group_buffer.append([char_buffer["character"][i], char_buffer["character"][i+1]])
+        original_group_buffer.append([char_buffer["character"][i], char_buffer["character"][i+1]])
+        group_buffer.append([char_buffer["numerical"][i], char_buffer["numerical"][i+1]])
     except:
         print("out of range")
-print("")
-print(f"Plaintext content (grouped): \n{group_buffer}")
-print("")
 
 group_length = (len(plaintext_content))/2
 group_length = int(group_length)
 
+print("")
+print(f"Grouped Numerical Plaintext Content: ")
 for i in range (0, group_length):
     try: 
         print(group_buffer[i])
     except Exception as e:
         print(f"Out of range:{e}")    
 print("")
-print("------")
-print("")
-
-# Pieces of the key
-print("The Key \n")
-matrix_size = int(key_content[0][0])
-for i in range(1, matrix_size + 1):
-    for j in range(0, matrix_size):
-        print(key_content[i][j], end=" ")
-    print("")
 
 # Multiply
-print("")
-print("------")
+print("-----------------------")
+print(group_buffer[1][0])
+
 print("")
 
 k=-1
+#'''
 for h in range((len(plaintext_content))):
     #print(h)
     for i in range(1, matrix_size + 1):
@@ -114,9 +124,7 @@ for h in range((len(plaintext_content))):
 
             print(f"The final result is: {chr(final_result0)}")
             print("")
-
-print(plaintext_content)
-print("---+--")        
+#''' 
 
 """
 result0 = int(key_content[1][0]) * int(char_buffer["numerical"][0])
