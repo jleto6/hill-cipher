@@ -20,39 +20,30 @@ import sys
 # Get arguments
 key = sys.argv[1]
 plaintext = sys.argv[2]
-#print("Arguments:", key, plaintext)
 
-# Open key
+#--- Open key ---#
 try: 
     with open(key, 'r') as file:
-        key_content = [line.strip().split() for line in file]  # Strip each line
-        print(key_content)  # Now it's a clean list
+        key_content = [line.strip().split() for line in file]  # Strip each line and make it a nested list
+        print("")
+        print(f"Key Content: \n{key_content}")  # Print  
 except:
     print("Error reading key text")
+print("------------------")
+
+#--- Plaintext ---#
 
 # Open plaintext
 try: 
     with open(plaintext, 'r') as file:
         plaintext_content = file.read().replace("\n", "")
-
 except:
     print("Error reading key text")
-
-
-
-
-print("")
-# Matrix multiplication
-print("")
-
-
-# Plaintext
 
 # Dict storing character and its numerical value in alphabet
 char_buffer = {
     "character" : [],
     "numerical" : [],
-    
 }
 i=0
 for char in plaintext_content:
@@ -66,28 +57,33 @@ for char in plaintext_content:
         char = ord(char) - ord('A')
         char_buffer["numerical"].append(char)
     i+=1
-
 i=0
+group_buffer = []
+
+# Create a nested list for the plaintext groups
 for i in range (0, len(plaintext_content), 2,):
-    
     try:
-        print(char_buffer["character"][i], end=" ")
-        print(char_buffer["numerical"][i])
-
-        print(char_buffer["character"][i+1], end=" ")
-        print(char_buffer["numerical"][i+1])
-
+        group_buffer.append([char_buffer["character"][i], char_buffer["character"][i+1]])
     except:
         print("out of range")
+print("")
+print(f"Plaintext content (grouped): \n{group_buffer}")
+print("")
 
-    print("")
+group_length = (len(plaintext_content))/2
+group_length = int(group_length)
 
+for i in range (0, group_length):
+    try: 
+        print(group_buffer[i])
+    except Exception as e:
+        print(f"Out of range:{e}")    
+print("")
 print("------")
 print("")
 
-
 # Pieces of the key
-#print(key_content[1][1])
+print("The Key \n")
 matrix_size = int(key_content[0][0])
 for i in range(1, matrix_size + 1):
     for j in range(0, matrix_size):
@@ -96,7 +92,8 @@ for i in range(1, matrix_size + 1):
 
 # Multiply
 print("")
-print("---+--")
+print("------")
+print("")
 
 k=-1
 for h in range((len(plaintext_content))):
@@ -108,11 +105,14 @@ for h in range((len(plaintext_content))):
           
             result1 = int(key_content[i][j]) * int(char_buffer["numerical"][k+1])           
 
-            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k]}/{char_buffer['character'][k]} = {result0}")
-            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k+1]}/{char_buffer['character'][k+1]} = {result1}")
+            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k]}|{char_buffer['character'][k]} = {result0}")
+            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k+1]}|{char_buffer['character'][k+1]} = {result1}")
             
             final_result0 = ((result0 + result1)%26)
-            print(f"The final result is: {final_result0}")
+
+            final_result0 = final_result0 + ord('A')
+
+            print(f"The final result is: {chr(final_result0)}")
             print("")
 
 print(plaintext_content)
