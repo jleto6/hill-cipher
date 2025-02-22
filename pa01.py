@@ -50,6 +50,7 @@ except:
 try: 
     with open(plaintext, 'r') as file:
         plaintext_content = file.read().replace("\n", "")
+        plaintext_content = "".join(c for c in plaintext_content if c.isalnum())
 except:
     print("Error reading key text")
 
@@ -118,11 +119,13 @@ for i in range((len(group_buffer))):
         # Column of matrix
         for k in range(matrix_size):
             current_key = int(key_content[j][k])
+            print(f"Multiplication: {current_plaintext} * {current_key}")
             result = (current_plaintext * current_key)
             inner_list.append(result)
         results.append(inner_list)
-#print(results)
 print()
+#print(results)
+
 
 # Group results into lists
 main_grouped_list = []
@@ -130,7 +133,10 @@ i=0
 while i < len(plaintext_content):
     grouped_list = []
     for j in range(matrix_size):
-        grouped_list.append(results[i])
+        try: 
+            grouped_list.append(results[i])
+        except:
+            print("out of RANGE")    
         i+=1
     main_grouped_list.append(grouped_list)
 print(main_grouped_list)
@@ -145,14 +151,20 @@ while i < len(main_grouped_list):
     # Inner elements
     current_list = []
     for j in range(matrix_size):
-        current = main_grouped_list[i][j]
-        addition = sum(current)
-        current_list.append(addition)
+        try: 
+            current = main_grouped_list[i][j]
+            addition = sum(current)
+            print(addition)
+            modulo = (addition % 26)
+            print(modulo)
+            current_list.append(modulo)
+        except:
+            print("out of RANGE")    
     i+=1
     result_list.append(current_list)
 
 print()
-print(result_list)
+#print(result_list)
 print()
 print("-----------------------")
 print()
