@@ -16,6 +16,7 @@
 +==================================================================='''
 
 import sys
+import math
 
 # Get arguments
 key = sys.argv[1]
@@ -33,7 +34,7 @@ except:
     print("Error reading key text")
 print("")
 
-# Pieces of the key
+# Print the key
 print("The Key:")
 try:
     for i in range(matrix_size):
@@ -61,14 +62,18 @@ char_buffer = {
     "character" : [],
     "numerical" : [],
 }
+# Convert the plaintext letters to numerical values
 i=0
+numerical_values = []
 for char in plaintext_content:
     char_buffer["character"].append(char)
 
-    # Convert to number
+    # If current plaintext value is already a number (and note at which position its at for later)
     if char.isdigit():
+        numerical_values.append(i)
         char = int(char)
         char_buffer["numerical"].append(char)
+    # Else, convert to number
     else:
         char = char.upper()
         char = ord(char) - ord('A')
@@ -104,7 +109,7 @@ print("")
 
 #'''
 results = []
-# Go through all plaintext
+# Go through amount of plaintext
 for i in range((len(group_buffer))):
     # Row of matrix
     for j in range(matrix_size):
@@ -116,13 +121,55 @@ for i in range((len(group_buffer))):
             result = (current_plaintext * current_key)
             inner_list.append(result)
         results.append(inner_list)
+#print(results)
+print()
 
-print(results)
-print(results[0])
+# Group results into lists
+main_grouped_list = []
+i=0
+while i < len(plaintext_content):
+    grouped_list = []
+    for j in range(matrix_size):
+        grouped_list.append(results[i])
+        i+=1
+    main_grouped_list.append(grouped_list)
+print(main_grouped_list)
 
-grouped_list = []
+# Do arithmetic on groups
+#print(len(main_grouped_list))
 
+i = 0
+# Go list by list
+result_list = []
+while i < len(main_grouped_list):
+    # Inner elements
+    current_list = []
+    for j in range(matrix_size):
+        current = main_grouped_list[i][j]
+        addition = sum(current)
+        current_list.append(addition)
+    i+=1
+    result_list.append(current_list)
 
+print()
+print(result_list)
+print()
+print("-----------------------")
+print()
+
+# Convert to ciphertext
+i=0
+for sublist in result_list:    # Outer elements
+    for num in sublist:
+        if i in numerical_values: # If it was already a number
+            print(num, end="")
+        # Else, convert to letter
+        else:
+            character = num + ord('A')
+            character = chr(character)
+            character = character.lower()
+            print(character, end="")
+        i+=1
 '''
 result0 = int(key_content[l][k]) * int(group_buffer[i][j])
 
