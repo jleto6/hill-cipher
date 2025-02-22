@@ -100,30 +100,44 @@ print("")
 
 # Multiply
 print("-----------------------")
-print(group_buffer[1][0])
-
 print("")
 
-k=-1
 #'''
-for h in range((len(plaintext_content))):
-    #print(h)
-    for i in range(1, matrix_size + 1):
-        k+=1
-        for j in range(matrix_size):
-            result0 = int(key_content[i][j]) * int(char_buffer["numerical"][k])
-          
-            result1 = int(key_content[i][j]) * int(char_buffer["numerical"][k+1])           
+results = []
+# Go through all plaintext
+for i in range((len(group_buffer))):
+    # Row of matrix
+    for j in range(matrix_size):
+        current_plaintext = int(group_buffer[i][j])
+        inner_list = []
+        # Column of matrix
+        for k in range(matrix_size):
+            current_key = int(key_content[j][k])
+            result = (current_plaintext * current_key)
+            inner_list.append(result)
+        results.append(inner_list)
 
-            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k]}|{char_buffer['character'][k]} = {result0}")
-            print(f"{i} | {key_content[i][j]}*{char_buffer["numerical"][k+1]}|{char_buffer['character'][k+1]} = {result1}")
-            
-            final_result0 = ((result0 + result1)%26)
+print(results)
+print(results[0])
 
-            final_result0 = final_result0 + ord('A')
+grouped_list = []
 
-            print(f"The final result is: {chr(final_result0)}")
-            print("")
+
+'''
+result0 = int(key_content[l][k]) * int(group_buffer[i][j])
+
+result1 = int(key_content[l][k+1]) * int(group_buffer[i][j])           
+
+print(f"{i} | {key_content[l][k]}*{group_buffer[i][j]}|{original_group_buffer[i][j]} = {result0}")
+
+print(f"{i} | {key_content[l][k+1]}*{group_buffer[i][j]}|{original_group_buffer[i][j]} = {result1}")
+
+final_result0 = ((result0 + result1)%26)
+final_result0 = final_result0 + ord('A')
+
+print(f"The final result is: {chr(final_result0)}")
+print("")
+'''
 #''' 
 
 """
